@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -76,14 +77,6 @@ public class MemberController {
         return ResponseEntity.ok(service.login(req));
     }
 
-    //로그아웃
-//    @PostMapping("/logout")
-//    public ResponseEntity logout(HttpServletRequest request , HttpServletResponse response){
-//        refreshService.logout(request, response);
-//        return ResponseEntity.ok().build();
-//    }
-
-
     //마이페이지 회원 조회
     @GetMapping("/mypage/{id}")
     public ResponseEntity<MemberResponse> getMemberInfo(@RequestHeader("Authorization") String token) {
@@ -101,33 +94,40 @@ public class MemberController {
 
 
     //비밀번호 일치 확인
-    @GetMapping("/checkPwd")
-    public ResponseEntity<String> checkPassword(@RequestParam("insertPwd") String insertPwd, @RequestHeader("Authorization") String token) {
-        //JWT 토큰에서 사용자 이메일 추출
-        String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
+    @PostMapping("/checkPwd")
+    public ResponseEntity<String> checkPassword(@RequestBody Map<String, String> requestBody, @RequestHeader("Authorization") String token) {
+        try {
+            //JWT 토큰에서 사용자 이메일 추출
+            String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
+            String insertPwd = requestBody.get("insertPwd");
+            System.out.println("입력된 비밀번호: " + insertPwd);
+            
 
-        //사용자의 존재 여부 확인
-        Member member = memberRepository.findByEmail(memberEmail);
-        if (member == null) {
-            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            //사용자의 존재 여부 확인
+            Member member = memberRepository.findByEmail(memberEmail);
+            System.out.println("기존 비밀번호: " + member.getPwd() );
+            if (member == null) {
+                return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            }
+
+            //기존 비밀번호 확인
+            if (!passwordEncoder.matches(insertPwd, member.getPwd())) {
+
+                return new ResponseEntity<>("기존 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+            }
+
+            //비밀번호 일치
+            return new ResponseEntity<>("비밀번호가 일치합니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("서버 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        //기존 비밀번호 확인
-        if (!passwordEncoder.matches(insertPwd, member.getPwd())) {
-            return new ResponseEntity<>("기존 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
-        }
-
-        //비밀번호 일치
-        return new ResponseEntity<>("비밀번호가 일치합니다.", HttpStatus.OK);
-
     }
 
     //정보 수정
-    @PutMapping("/mypage/update/{id}")
-    public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token
-
-    ) {
-        System.out.println(id);
+    @PutMapping("/mypage/update/{email}")
+    public ResponseEntity<String> updateMember(@PathVariable String email, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token) {
+        System.out.println(email);
         System.out.println(req.getBirth());
         System.out.println(req.getNickname());
         System.out.println(req.getPwd());
@@ -136,37 +136,41 @@ public class MemberController {
 
         System.out.println("토큰 출력 : "  + token);
 
-        //클라이언트 요청의 유효성 검증
+        // 클라이언트 요청의 유효성 검증
         ResponseEntity<String> validationResponse = validateRequest(req);
         if (validationResponse != null) {
             return validationResponse;
         }
 
-        //JWT 토큰에서 사용자 이메일 추출
+        // JWT 토큰에서 사용자 이메일 추출
         String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
 
-        //사용자의 존재 여부 확인
+        // 사용자의 존재 여부 확인
         Member member = memberRepository.findByEmail(memberEmail);
         if (member == null) {
             return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        //정보 수정 권한 확인
-        if (!member.getId().equals(id)) {
+        // 정보 수정 권한 확인
+        if (!member.getEmail().equals(email)) {
             return new ResponseEntity<>("해당 사용자의 정보를 수정할 수 있는 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
-        //수정된 비밀번호를 BCrypt 알고리즘을 사용하여 해싱
-        String hashedPassword = passwordEncoder.encode(req.getPwd());
+        // 수정된 비밀번호를 BCrypt 알고리즘을 사용하여 해싱
+        String hashedPassword = member.getPwd(); // 기존 비밀번호로 초기화
 
-        //회원 정보 수정
-        boolean update = service.updateMember(id, req.getNickname(), hashedPassword, req.getBirth(), req.getPhone(), req.getAddress());
+        if (req.getPwd().equals(req.getPwd())) {
+            hashedPassword = passwordEncoder.encode(req.getPwd()); // 비밀번호가 수정되었을 경우에만 새로운 비밀번호로 설정
+        }
+
+        // 회원 정보 수정
+        boolean update = service.updateMember(email, req.getNickname(), hashedPassword, req.getBirth(), req.getPhone(), req.getAddress());
+        System.out.println("수정된 비밀번호:" + hashedPassword);
         if (update) {
             return new ResponseEntity<>("정보 수정이 완료되었습니다.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("정보 수정을 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     //클라이언트 요청의 유효성을 검증하는 메서드

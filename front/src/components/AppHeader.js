@@ -34,6 +34,7 @@ import { AppHeaderDropdown } from './header/index'
 import {AuthModeDispatch, AuthModeInfo} from "src/layout/DefaultLayout";
 
 const AppHeader = () => {
+
   const { auth, setAuth } = useContext(AuthContext);
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')

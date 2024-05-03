@@ -144,9 +144,10 @@ public class MemberService {
     }
 
     //정보 수정
-    public boolean updateMember (Long id, String nickname, String pwd, LocalDateTime birth, String phone, String address) {
-        if (memberRepository.existsById(id)) {
-            Member member = memberRepository.findById(id).get();
+    public boolean updateMember (String email, String nickname, String pwd, LocalDateTime birth, String phone, String address) {
+        Member member = memberRepository.findByEmail(email);
+
+        if (member != null) {
             if (nickname != null) {
                 member.setNickname(nickname);
             }
@@ -163,9 +164,11 @@ public class MemberService {
                 member.setAddress(address);
             }
 
+            // 회원 정보를 저장하여 업데이트
             memberRepository.save(member);
             return true;
         } else {
+            // 회원이 존재하지 않는 경우 false 반환
             return false;
         }
     }
