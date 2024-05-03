@@ -79,7 +79,7 @@ const Signup = () => {
     axios.post('http://localhost:3011/member/join', data).then((res) => {
       console.log(res)
       alert('회원가입이 완료되었습니다.')
-      navigator('/login')
+      navigator('/signin')
     }).catch((err) => {
       console.log(err)
     })
