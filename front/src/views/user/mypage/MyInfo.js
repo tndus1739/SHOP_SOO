@@ -1,13 +1,16 @@
 import React from 'react';
 import MyPageTabs from './MyPageTabs';
+import {CCardBody, CCol} from "@coreui/react";
 
 const MyInfo = () => {
   return (
-    <div>
-      <h1></h1>
+    <CCol xs={12}>
       <MyPageTabs />
-      dddd
-    </div>
+      <CCardBody>
+        dd
+      </CCardBody>
+
+    </CCol>
   );
 };
 

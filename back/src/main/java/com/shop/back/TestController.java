@@ -1,5 +1,6 @@
 package com.shop.back;
 
+import com.shop.back.cart.entity.Cart;
 import com.shop.back.category.entity.Category;
 import com.shop.back.category.repository.CategoryRepository;
 import com.shop.back.item.dto.ItemFormDto;
@@ -10,7 +11,9 @@ import com.shop.back.like.entity.Likes;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.response.JoinResponse;
 import jakarta.validation.Valid;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -158,4 +161,16 @@ public class TestController {
 		}
 		return ResponseEntity.ok(list);
 	}
+
+	@PostMapping("/item/order/test")
+	public ResponseEntity<?> order(@RequestBody List<OrderDtoTest> orderDtoTest) {
+		System.out.println(orderDtoTest);
+		return ResponseEntity.ok(orderDtoTest);
+	}
+}
+
+@Data
+class OrderDtoTest {
+	private int count;
+	private Long id;
 }

@@ -16,7 +16,7 @@ import {
   CRow, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow
 } from "@coreui/react";
 import axios from "axios";
-import {json, useParams} from "react-router-dom";
+import {json, useNavigate, useParams} from "react-router-dom";
 import ItemOption from "src/views/user/item/ItemOption";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
@@ -34,6 +34,7 @@ function Item() {
   const [sizeInfo, setSizeInfo] = useState([[]])
   const [colors, setColors] = useState([])
   const [isLike, setIsLike] = useState('outline')
+  const navigator = useNavigate()
 
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -98,6 +99,7 @@ function Item() {
         }
       }
     }
+    e.target.value = 0
     setSelectedItem(selItems)
   }
 
@@ -140,6 +142,11 @@ function Item() {
       return
     } else {
       console.log(selectedItem)
+      axios.post('http://localhost:3011/item/order/test', selectedItem).then((res) => {
+        console.log(res)
+        const orderId = 1
+        navigator(`/order/${1}`)
+      })
     }
   }
 
@@ -158,7 +165,14 @@ function Item() {
   }
 
   const basket = () => {
-    const items = selectedItem
+    const items = []
+    for(const sel of selectedItem) {
+      const item = {}
+      item['email'] = localStorage.getItem('email')
+      item['count'] = sel.count
+      item['itemId'] = sel.id
+      items.push(item)
+    }
     console.log(items)
   }
 

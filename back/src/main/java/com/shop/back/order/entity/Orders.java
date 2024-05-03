@@ -21,6 +21,8 @@ public class Orders extends BaseEntity {
 
 	private int price;
 
+	private int del;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "item_id")
 	private Item item;

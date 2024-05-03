@@ -16,6 +16,9 @@ const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
+//  결제완료
+const Complete = React.lazy(() => import('./views/user/payment/complete'))
+
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const storedTheme = useSelector((state) => state.theme)
@@ -75,6 +78,7 @@ const App = () => {
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
+          <Route exact path="/pay/kakaopay/complete" name="결제 완료" element={<Complete />} />
           <Route path="*" name="Home" element={<DefaultLayout category={navi} />} />
         </Routes>
       </Suspense>
