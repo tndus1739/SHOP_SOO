@@ -1,45 +1,66 @@
 import React, { useState } from 'react';
-import { CButton, CCol, CForm, CFormGroup, CInput, CLabel, CModal, CModalBody, CModalFooter, CModalHeader } from '@coreui/react';
+import { CButton, CCard, CCardBody, CCol, CFormInput, CRow } from "@coreui/react";
+import { useNavigate } from "react-router-dom";
+import UserMyPageMemberService from "src/services/UserMyPageMemberService";
 
-const MyPwdCheck = ({ isOpen, onClose, onPasswordConfirm }) => {
-  const [password, setPassword] = useState('');
+const MyPwdCheck = ({ onPasswordValidation }) => {
+  const [pwd, setPwd] = useState('');
+  const [error, setError] = useState('');
 
-  const handleConfirm = () => {
-    // 여기서는 임의로 비밀번호가 'password'인지 확인하는 예시를 보여주고 있습니다.
-    // 실제로는 서버와 통신하여 비밀번호를 확인해야 합니다.
-    if (password === 'password') {
-      // 비밀번호가 일치하는 경우 정보 수정 페이지로 이동합니다.
-      onPasswordConfirm();
-    } else {
-      // 비밀번호가 일치하지 않는 경우 팝업을 표시합니다.
-      alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+  const handlePasswordChange = (e) => {
+    setPwd(e.target.value);
+    setError('');
+  };
+
+  const handleCheckPassword = async () => {
+    try {
+      console.log("입력된 비밀번호: ", pwd);
+      const response = await UserMyPageMemberService.checkPassword(pwd);
+
+      if (response.data) {
+        onPasswordValidation(true); // 부모 컴포넌트에게 알림
+      } else {
+        setError("비밀번호가 일치하지 않습니다.");
+      }
+    } catch (error) {
+      console.error("Error checking password:", error);
+      setError("비밀번호 확인 중 오류가 발생했습니다.");
     }
   };
 
   return (
-    <CModal show={isOpen} onClose={onClose}>
-      <CModalHeader closeButton>본인 확인</CModalHeader>
-      <CModalBody>
-        <CForm>
-          <CFormGroup row>
-            <CCol md="4">
-              <CLabel>비밀번호</CLabel>
+    <CCol xs={12}>
+        <CCardBody>
+          <CRow className="mb-3">
+            <CCol sm={12}>
+              <h5>비밀번호 확인</h5>
             </CCol>
-            <CCol md="8">
-              <CInput
+          </CRow>
+          <CRow className="mb-3">
+            <CCol sm={12}>
+              <CFormInput
+                placeholder="비밀번호"
+                autoComplete="current-password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={pwd}
+                onChange={handlePasswordChange}
               />
             </CCol>
-          </CFormGroup>
-        </CForm>
-      </CModalBody>
-      <CModalFooter>
-        <CButton color="primary" onClick={handleConfirm}>확인</CButton>{' '}
-        <CButton color="secondary" onClick={onClose}>취소</CButton>
-      </CModalFooter>
-    </CModal>
+          </CRow>
+          {error && (
+            <CRow className="mb-3">
+              <CCol sm={12}>
+                <p className="text-danger">{error}</p>
+              </CCol>
+            </CRow>
+          )}
+          <CRow>
+            <CCol sm={12}>
+              <CButton color="primary" onClick={handleCheckPassword}>확인</CButton>
+            </CCol>
+          </CRow>
+        </CCardBody>
+    </CCol>
   );
 };
 

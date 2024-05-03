@@ -5,32 +5,28 @@ import UserMyPageMemberService from "src/services/UserMyPageMemberService";
 
 const MyPageTabs = ({ id }) => {
   const location = useLocation();
+  const { email } = useParams();
   const [activeTab, setActiveTab] = useState('');
 
 
   useEffect(() => {
-    console.log('useEffect ID in MyPageTabs1:', id); // id를 콘솔에 출력
     const fetchUserData = async () => {
       try {
-        const response = await UserMyPageMemberService.getMember(id);
-        const userId = response.data.id;
-        console.log('useEffect MypageTabs User ID2:', userId);
+        const response = await UserMyPageMemberService.getMember(email);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
 
-    if (id !== null) {
+    if (email !== null) {
       fetchUserData();
     }
-  }, [id]);
+  }, [email]);
 
   const handleTabClick = (tab) => {
-    console.log('Current tab:', tab);
     setActiveTab(tab);
   };
 
-  console.log('MypageTabs User ID:', id);
 
   return (
     <CCol xs={12}>
@@ -49,12 +45,12 @@ const MyPageTabs = ({ id }) => {
         <CNavItem>
           <CNavLink
             as={NavLink}
-            to={`/mypage/${id}`}
+            to="/mypage/myInfo"
             onClick={() => handleTabClick('MyInfo')}
             style={{ cursor: 'pointer' }}
-            active={activeTab === 'MyInfo' || location.pathname === `/mypage/${id}`}
+            active={activeTab === 'MyInfo'}
           >
-            정보수정 : {id}
+            정보수정
           </CNavLink>
         </CNavItem>
         <CNavItem>

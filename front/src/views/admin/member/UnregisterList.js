@@ -37,7 +37,7 @@ function UnregisterList() {
 
   return (
     <MemberList
-      title="관리자 목록"
+      title="탈퇴 목록"
       fetchFunction={fetchUnregisterList}
       searchFunction={searchUnregister}
       list={unregisterList}
