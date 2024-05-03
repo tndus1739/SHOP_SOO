@@ -159,8 +159,9 @@ public class MemberController {
         // 수정된 비밀번호를 BCrypt 알고리즘을 사용하여 해싱
         String hashedPassword = member.getPwd(); // 기존 비밀번호로 초기화
 
-        if (req.getPwd().equals(req.getPwd())) {
-            hashedPassword = passwordEncoder.encode(req.getPwd()); // 비밀번호가 수정되었을 경우에만 새로운 비밀번호로 설정
+        // 비밀번호가 수정되었는지 확인 후 암호화
+        if (!req.getPwd().equals(member.getPwd())) {
+            hashedPassword = passwordEncoder.encode(req.getPwd()); // 새로운 비밀번호로 암호화
         }
 
         // 회원 정보 수정
