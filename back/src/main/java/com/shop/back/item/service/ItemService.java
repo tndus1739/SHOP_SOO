@@ -77,6 +77,7 @@ public class ItemService {
 			 Item item = itemDto.createItem();
 			 item.setItemGroup(itemGroup2);
 			 item.setColors(colors);
+			 item.setDel(1);
 			 itemRepository.save(item);
 		 }
 		
