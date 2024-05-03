@@ -108,8 +108,13 @@ public class AdminMemberController {
         }
 
         Member member = optionalMember.get();
-        // 수정된 비밀번호를 BCrypt 알고리즘을 사용하여 해싱
-        String hashedPassword = passwordEncoder.encode(req.getPwd());
+        // 기존의 암호화된 비밀번호를 가져옵니다.
+        String hashedPassword = member.getPwd();
+
+        // 비밀번호가 수정되었는지 확인 후 암호화
+        if (!req.getPwd().equals(member.getPwd())) {
+            hashedPassword = passwordEncoder.encode(req.getPwd()); // 새로운 비밀번호로 암호화
+        }
 
         member.setPwd(hashedPassword);
         member.setName(req.getName());
@@ -130,7 +135,6 @@ public class AdminMemberController {
         System.out.println("수정 후 생년월일: " + req.getBirth());
         System.out.println("수정 후 권한: " + req.getRole());
         System.out.println("수정 후 주소: " + req.getAddress());
-
 
         return ResponseEntity.ok(member);
     }
