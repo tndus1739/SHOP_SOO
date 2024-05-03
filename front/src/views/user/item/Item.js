@@ -174,6 +174,9 @@ function Item() {
       items.push(item)
     }
     console.log(items)
+    axios.post('http://localhost:3011/cart', items).then((res) => {
+      console.log(res)
+    })
   }
 
   useEffect(() => {
