@@ -13,7 +13,15 @@ public class CartDetailDto {
 
 	    private int price; 
 
-	    private int productsCnt;
+	    private int count;
 
 	    private String path; 
+	    
+	    public CartDetailDto(Long cartItemId, String name, int price, int count, String path){
+	        this.cartItemId = cartItemId;
+	        this.name = name;
+	        this.price = price;
+	        this.count = count;
+	        this.path = path;
+	    }
 }
