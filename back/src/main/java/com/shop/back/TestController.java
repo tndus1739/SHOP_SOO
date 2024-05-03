@@ -171,6 +171,7 @@ public class TestController {
 
 @Data
 class OrderDtoTest {
+	private Long ItemId;
 	private int count;
-	private Long id;
+	private String email;
 }
