@@ -26,10 +26,12 @@ public class ItemGroup extends BaseEntity {
 
 	private String name;
 
+	@Column(length = 4000)
 	private String content;
 
 	private String gender;
 
+	@Column(length = 4000)
 	private String sizeTable;
 
 	private int views;          //  조회수

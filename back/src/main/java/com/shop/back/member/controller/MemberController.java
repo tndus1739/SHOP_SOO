@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/user")
 public class MemberController {
 
     private final MemberService service;
@@ -85,7 +85,7 @@ public class MemberController {
 
 
     //마이페이지 회원 조회
-    @GetMapping("/mypage")
+    @GetMapping("/mypage/{id}")
     public ResponseEntity<MemberResponse> getMemberInfo(@RequestHeader("Authorization") String token) {
         //JWT 토큰에서 사용자 이메일 추출
         String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
@@ -124,10 +124,15 @@ public class MemberController {
 
     //정보 수정
     @PutMapping("/mypage/update/{id}")
-    public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token
+
+    ) {
+        System.out.println(id);
         System.out.println(req.getBirth());
         System.out.println(req.getNickname());
         System.out.println(req.getPwd());
+        System.out.println(req.getPhone());
+        System.out.println(req.getAddress());
 
         System.out.println("토큰 출력 : "  + token);
 
@@ -155,7 +160,7 @@ public class MemberController {
         String hashedPassword = passwordEncoder.encode(req.getPwd());
 
         //회원 정보 수정
-        boolean update = service.updateMember(id, req.getNickname(), hashedPassword, req.getBirth());
+        boolean update = service.updateMember(id, req.getNickname(), hashedPassword, req.getBirth(), req.getPhone(), req.getAddress());
         if (update) {
             return new ResponseEntity<>("정보 수정이 완료되었습니다.", HttpStatus.OK);
         } else {

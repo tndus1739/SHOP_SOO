@@ -12,4 +12,6 @@ public class MemberUpdateRequest {
     private String nickname;
     private String pwd;
     private LocalDateTime birth;
+    private String phone;
+    private String address;
 }

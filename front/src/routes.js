@@ -68,7 +68,7 @@ const AdminAdminDetail = React.lazy(() => import('./views/admin/member/AdminDeta
 const AdminUnregisterDetail = React.lazy(() => import('./views/admin/member/UnregisterDetail'))
 
 // 주문내역
-
+const AdminOrderList = React.lazy(() => import('./views/admin/order/OrderList'))
 
 
 //  카테고리
@@ -109,10 +109,13 @@ const Signin = React.lazy(() => import('./views/user/member/Signin'))
 const Logout = React.lazy(() => import('./views/user/Logout'))
 
 // 마이페이지
-//마이페이지 홈
-const Mypage = React.lazy(() => import('./views/user/mypage/MyPageTabs'))
-//정보수정
-const Myinfo = React.lazy(() => import('./views/user/mypage/MyInfo'))
+// 마이페이지 홈
+const MyHome = React.lazy(() => import('./views/user/mypage/MyHome'));
+const MyInfo = React.lazy(() => import('./views/user/mypage/MyInfo'));
+const MyOrder = React.lazy(() => import('./views/user/mypage/MyOrder'));
+const MyCart = React.lazy(() => import('./views/user/mypage/MyCart'));
+const MyLike = React.lazy(() => import('./views/user/mypage/MyLike'));
+const MyWithout = React.lazy(() => import('./views/user/mypage/MyWithout'));
 
 const routes = [
   { path: '/items', exact: true, element: Index },
@@ -167,6 +170,7 @@ const routes = [
   { path: '/admin/member/adminDetail/:id', name:'AdminAdminDetail', element: AdminAdminDetail},
   { path: '/admin/member/unregisterList', name:'AdminUnregisterList', element: AdminUnregisterList},
   { path: '/admin/member/unregisterDetail/:id', name:'AdminUnregisterDetail', element: AdminUnregisterDetail},
+  { path: '/admin/order/orderList', name:'AdminOrderList', element: AdminOrderList},
   { path: '/admin/category', name: 'Admin', element: AdminCategory },
   { path: '/admin/item/form', name: '상품 등록', element: AdminItemForm },
   { path: '/admin/item/list', name: '상품 리스트', element: AdminItemList },
@@ -177,8 +181,12 @@ const routes = [
   { path: '/signup', name: '회원가입', element: Signup},
   { path: '/signin', name: '로그인', element: Signin},
   { path: '/logout', name: '로그아웃', element: Logout},
-  { path: '/user/mypage/MyPageTabs', name: '마이페이지', element: Mypage},
-  { path: '/user/mypage/MyInfo', name: '정보수정', element: Myinfo},
+  { path: '/mypage/myHome', name: '마이페이지_홈', element: MyHome },
+  { path: '/mypage/:id', name: '마이페이지_정보수정', element: MyInfo },
+  { path: '/mypage/myOrder', name: '마이페이지_주문내역', element: MyOrder },
+  { path: '/mypage/myCart', name: '마이페이지_장바구니', element: MyCart },
+  { path: '/mypage/myLike', name: '마이페이지_좋아요', element: MyLike },
+  { path: '/mypage/myWithout', name: '마이페이지_탈퇴', element: MyWithout },
   { path: '/order/:orderId', name: '주문', element: Order},
   { path: '/order', name: '주문', element: Order},
 ]

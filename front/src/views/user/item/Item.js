@@ -192,7 +192,9 @@ function Item() {
             <CCardBody>
               <CCarousel transition="crossfade" interval={4000} controls>
                 {
-                  group.images.map((img, img_idx) => (
+                  group.images
+                    .sort((a, b) => (a.isMain === 1 ? -1 : 1))
+                    .map((img, img_idx) => (
                     <CCarouselItem key={img_idx}>
                       <img className="d-block w-100" src={'http://localhost:3011' + img.path}
                            alt={img.isMain ? "slide 1" : "slide " + img_idx + 1}
