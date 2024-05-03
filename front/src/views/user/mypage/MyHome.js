@@ -2,7 +2,7 @@ import React from 'react';
 import MyPageTabs from "src/views/user/mypage/MyPageTabs";
 import {CCard, CCardBody, CCol} from "@coreui/react";
 
-const MyLike = () => {
+const MyHome = () => {
   return (
     <CCol xs={12}>
       <CCard className="mb-4">
@@ -10,7 +10,7 @@ const MyLike = () => {
           <MyPageTabs/>
           <CCardBody>
             {/*내용*/}
-            좋아요
+            홈
           </CCardBody>
         </CCardBody>
       </CCard>
@@ -18,4 +18,4 @@ const MyLike = () => {
   );
 };
 
-export default MyLike;
+export default MyHome;

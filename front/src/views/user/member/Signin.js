@@ -29,7 +29,7 @@ const Signin = () => {
         }
         console.log(data)
 
-        axios.post('http://localhost:3011/member/login', data).then((res) => {
+        axios.post('http://localhost:3011/user/login', data).then((res) => {
           console.log(res)
 
           const { email, accessToken, refreshToken } = res.data;
@@ -39,10 +39,10 @@ const Signin = () => {
             // Refresh Token은 쿠키에 저장
             document.cookie = `refreshToken=${refreshToken}; Secure; HttpOnly; SameSite=Strict`
             localStorage.setItem('email', email)
-            
+
             location.reload(true)
             //navigator('/')
-            
+
             }
 
         }).catch((err) => {
