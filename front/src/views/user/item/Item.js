@@ -137,11 +137,19 @@ function Item() {
   }
 
   const buyNow = () => {
+    const del = 0
+    if(del) {
+      console.log("del")
+    } else {
+      console.log("asdf")
+    }
+    return
     if(!selectedItem.length) {
       alert('상품 옵션을 선택해주세요')
       return
     } else {
       console.log(selectedItem)
+      return
       axios.post('http://localhost:3011/item/order/test', selectedItem).then((res) => {
         console.log(res)
         const orderId = 1
@@ -174,6 +182,9 @@ function Item() {
       items.push(item)
     }
     console.log(items)
+    axios.post('http://localhost:3011/cart', items).then((res) => {
+      console.log(res)
+    })
   }
 
   useEffect(() => {
@@ -189,7 +200,9 @@ function Item() {
             <CCardBody>
               <CCarousel transition="crossfade" interval={4000} controls>
                 {
-                  group.images.map((img, img_idx) => (
+                  group.images
+                    .sort((a, b) => (a.isMain === 1 ? -1 : 1))
+                    .map((img, img_idx) => (
                     <CCarouselItem key={img_idx}>
                       <img className="d-block w-100" src={'http://localhost:3011' + img.path}
                            alt={img.isMain ? "slide 1" : "slide " + img_idx + 1}

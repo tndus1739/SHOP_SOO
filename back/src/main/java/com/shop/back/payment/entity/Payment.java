@@ -27,4 +27,5 @@ public class Payment {      //  상품별
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "item_id")
 	private Item item;
+
 }

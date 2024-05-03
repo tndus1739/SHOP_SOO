@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,7 @@ public class ItemController {
 	    
 	 // 상품 등록
 	    @PostMapping
+	    @PreAuthorize("hasRole('ADMIN')")
 		public ResponseEntity<?> post(
 				@RequestBody ItemFormDto itemFormDto 
 				

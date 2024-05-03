@@ -17,6 +17,7 @@ public class Colors extends BaseEntity {
 	@Column(unique = true)
 	private String name;
 
+	@Column(unique = true)
 	private String rgb;
 
 	private String hex;

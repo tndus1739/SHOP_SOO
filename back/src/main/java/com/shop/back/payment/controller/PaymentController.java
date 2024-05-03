@@ -40,16 +40,12 @@ public class PaymentController {
 		System.out.println(payData);
 		if (payData.size() > 0) {
 			Member member = memberRepository.findByEmail(payData.get(0).getEmail());
-			if(member.getId() == null) {
-				res.put("msg", "login");
+			String next_redirect_pc_url = kakaopay.kakaoPayReady(payData, member);
+			if (!next_redirect_pc_url.equals("error")) {
+				res.put("next_redirect_pc_url", next_redirect_pc_url);
+				res.put("msg", "success");
 			} else {
-				String next_redirect_pc_url = kakaopay.kakaoPayReady(payData, member);
-				if(!next_redirect_pc_url.equals("error")) {
-					res.put("next_redirect_pc_url", next_redirect_pc_url);
-					res.put("msg", "success");
-				} else {
-					res.put("msg", "error");
-				}
+				res.put("msg", "error");
 			}
 		} else {
 			res.put("msg", "error");
