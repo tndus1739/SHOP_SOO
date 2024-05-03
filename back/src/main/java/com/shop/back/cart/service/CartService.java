@@ -75,11 +75,11 @@ public class CartService {
 
     // 장바구니 조회
 
-	public List<CartDetailDto> getCartList(Long id){
+	public List<CartDetailDto> getCartList(String email){
 
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
 
-        Member member = memberRepository.findById(id).orElse(null);
+        Member member = memberRepository.findByEmail(email);
         
         // 회원이 없는 경우 빈 리스트 반환
         if (member == null) {
@@ -115,7 +115,7 @@ public class CartService {
 	 
 	// 주문한 상품 장바구니에서 제거 
 	 
-	
+	 
 	 
 	 
 	 
