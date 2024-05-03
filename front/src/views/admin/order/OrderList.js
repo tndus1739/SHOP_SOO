@@ -86,11 +86,11 @@ const OrderList = () => {
               <CTable style={{textAlign: 'center'}}>
                 <CTableHead color="light">
                   <CTableRow>
-                    <CTableHeaderCell scope="col" style={{width: '20%'}}>주문번호</CTableHeaderCell>{/* paymentHistory.tid */}
-                    <CTableHeaderCell scope="col" style={{ width: '20%' }}>주문자</CTableHeaderCell>{/* paymentHistory.member */}
-                    <CTableHeaderCell scope="col" style={{ width: '10%' }}>총 금액</CTableHeaderCell>{/* paymentHistory.totalPrice */}
+                    <CTableHeaderCell scope="col" style={{width: '20%'}}>주문번호</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" style={{ width: '20%' }}>주문자</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" style={{ width: '10%' }}>총 금액</CTableHeaderCell>
                     <CTableHeaderCell scope="col" style={{ width: '20%' }}>주문일자</CTableHeaderCell>
-                    <CTableHeaderCell scope="col" style={{ width: '10%' }}>결제방법</CTableHeaderCell>{/* paymentHistory.KakaoPay */}
+                    <CTableHeaderCell scope="col" style={{ width: '10%' }}>결제방법</CTableHeaderCell>
                     <CTableHeaderCell scope="col" style={{ width: '20%' }}>관리</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
