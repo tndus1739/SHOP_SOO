@@ -85,7 +85,7 @@ public class CartController {
 	// 장바구니 조회 
 	
 	@GetMapping("/cart/{email}")
-    public ResponseEntity<List<CartDetailDto>> getCartList(@RequestParam String email) {
+    public ResponseEntity<List<CartDetailDto>> getCartList(@PathVariable String email) {
         List<CartDetailDto> cartDetailList = cartService.getCartList(email);
         return new ResponseEntity<>(cartDetailList, HttpStatus.OK);
 	}
