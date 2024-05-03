@@ -98,6 +98,10 @@ const Buttons = () => {
     }
     axios.post('http://localhost:3011/admin/colors', data).then((res) => {
       console.log(res)
+      alert('등록되었습니다.')
+    }).catch(err => {
+      alert('이미 등록된 색상입니다.')
+      location.reload()
     })
   }
 
