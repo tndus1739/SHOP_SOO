@@ -144,7 +144,7 @@ public class MemberService {
     }
 
     //정보 수정
-    public boolean updateMember (Long id, String nickname, String pwd, LocalDateTime birth) {
+    public boolean updateMember (Long id, String nickname, String pwd, LocalDateTime birth, String phone, String address) {
         if (memberRepository.existsById(id)) {
             Member member = memberRepository.findById(id).get();
             if (nickname != null) {
@@ -156,6 +156,12 @@ public class MemberService {
             if (birth != null) {
                 member.setBirth(birth);
             }
+            if (phone != null) {
+                member.setPhone(phone);
+            }
+            if (address != null) {
+                member.setAddress(address);
+            }
 
             memberRepository.save(member);
             return true;
@@ -164,16 +170,23 @@ public class MemberService {
         }
     }
 
-    //회원 탈퇴 (Role: UNREGISTER으로 변경)
-    public boolean withdrawMember(String email) {
-        //회원 정보 조회
-        Member member = memberRepository.findByEmail(email);
+    public MemberResponse getMemberById(Long id) {
+        Member member = memberRepository.findById(id).orElse(null);
         if (member != null) {
-            member.setRole(Role.UNREGISTER);
-            memberRepository.save(member);
-            return true;
+            return new MemberResponse(
+                    member.getId(),
+                    member.getName(),
+                    member.getNickname(),
+                    member.getEmail(),
+                    member.getPwd(),
+                    member.getRole(),
+                    member.getGender(),
+                    member.getBirth(),
+                    member.getPhone(),
+                    member.getAddress()
+            );
         } else {
-            return false;
+            return null; // or throw exception
         }
     }
 
@@ -195,9 +208,47 @@ public class MemberService {
                 member.getRole(),
                 member.getGender(),
                 member.getBirth(),
-                member.getPhone()
+                member.getPhone(),
+                member.getAddress()
+
         );
     }
+
+    public MemberResponse getMemberByEmail(String email) {
+        Member member = memberRepository.findByEmail(email);
+        if (member != null) {
+            return new MemberResponse(
+                    member.getId(),
+                    member.getName(),
+                    member.getNickname(),
+                    member.getEmail(),
+                    member.getPwd(),
+                    member.getRole(),
+                    member.getGender(),
+                    member.getBirth(),
+                    member.getPhone(),
+                    member.getAddress()
+            );
+        } else {
+            return null; // or throw exception
+        }
+    }
+
+
+    //회원 탈퇴 (Role: UNREGISTER으로 변경)
+    public boolean withdrawMember(String email) {
+        //회원 정보 조회
+        Member member = memberRepository.findByEmail(email);
+        if (member != null) {
+            member.setRole(Role.UNREGISTER);
+            memberRepository.save(member);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     //Member Role 조회
     public List<Member> getMemberbyRole(Role role) {

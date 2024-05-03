@@ -49,6 +49,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 System.out.println("JwtAuthenticationFilter: expired token !");
                 e.printStackTrace();
+                // 토큰이 만료된 경우 로그아웃 처리
+                SecurityContextHolder.clearContext();
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 토큰이 만료되었습니다. 다시 로그인해주세요.");
+                return;
             } catch(SignatureException e){
                 System.out.println("JwtAuthenticationFilter: invalid member !");
                 e.printStackTrace();

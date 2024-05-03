@@ -154,6 +154,7 @@ public class KakaoPay {
 			payHistory.setTid(kakaoPayApprovalVO.getTid());
 			payHistory.setTitle(kakaoPayReadyVO.getItem_name());
 			payHistory.setTotalPrice(kakaoPayReadyVO.getPrice());
+			payHistory.setMember(member);
 			System.out.println("payhistory : ");
 			PaymentHistory savedPayHistory = paymentHistoryRepository.save(payHistory);
 			for(Payment payment : paymentList) {

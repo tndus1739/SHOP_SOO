@@ -36,10 +36,11 @@ function ItemList({item}) {
           <CCardBody>
             <CCarousel transition="crossfade" interval={4000}>
               {
-                item.images.map((img, img_idx) => (
+                item.images
+                  .sort((a, b) => (a.isMain === 1 ? -1 : 1))
+                  .map((img, img_idx) => (
                   <CCarouselItem key={img_idx}>
                     <img className="d-block w-100" src={'http://localhost:3011' + img.path}
-                         alt={img.isMain ? "slide 1" : "slide " + img_idx + 1}
                          height={200}/>
                   </CCarouselItem>
                 ))
