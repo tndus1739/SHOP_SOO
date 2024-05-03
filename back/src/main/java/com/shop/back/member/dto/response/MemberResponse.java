@@ -20,5 +20,6 @@ public class MemberResponse {
     private String gender;
     private LocalDateTime birth;
     private String phone;
+    private String address;
 
 }

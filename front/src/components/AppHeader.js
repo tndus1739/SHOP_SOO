@@ -80,7 +80,7 @@ const AppHeader = () => {
           </CNavItem>
 
           <CNavItem>
-            <CNavLink onClick={() => {navigator('/user/mypage/MypageTabs')}} style={{cursor: 'pointer'}}>마이페이지</CNavLink>
+            <CNavLink onClick={() => {navigator('/mypage/myHome')}} style={{cursor: 'pointer'}}>마이페이지</CNavLink>
           </CNavItem>
 
           <CNavItem>
