@@ -100,8 +100,9 @@ public class CartService {
 	 public void updateCartItemCount(Long cartItemId, int count){
 	        CartItem cartItem = cartItemRepository.findById(cartItemId)
 	                .orElseThrow(EntityNotFoundException::new);
-
-	        cartItem.addCount(count);
+			cartItem.setCount(count);
+			cartItemRepository.save(cartItem);
+//	        cartItem.addCount(count);
 	    }
 	
 	// 장바구니 삭제 
@@ -109,8 +110,9 @@ public class CartService {
 	 public void deleteCartItem(Long cartItemId) {
 	        CartItem cartItem = cartItemRepository.findById(cartItemId)
 	                .orElseThrow(EntityNotFoundException::new);
-	        cartItem.setDel(0);  // 삭제 : 0 
-	        cartItemRepository.save(cartItem);
+//	        cartItem.setDel(0);  // 삭제 : 0
+//	        cartItemRepository.save(cartItem);
+		    cartItemRepository.delete(cartItem);
 	 }
 	 
 	// 주문한 상품 장바구니에서 제거 

@@ -92,9 +92,9 @@ public class CartController {
 
 
    // 장바구니 수정
-   @PutMapping("cartItem/{cartItemId}")
-   public @ResponseBody ResponseEntity updateCartItem(@PathVariable("cartItemId") Long cartItemId, int count){
-
+   @PutMapping("cartItem/{cartItemId}/{count}")
+   public @ResponseBody ResponseEntity updateCartItem(@PathVariable("cartItemId") Long cartItemId, @PathVariable("count") int count){
+	   System.out.println(count);
        if(count <= 0){
            return new ResponseEntity<String>("최소 1개 이상 담아주세요", HttpStatus.BAD_REQUEST);
        } 

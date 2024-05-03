@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
-  CButton, CFormInput,
-  CImage, CInputGroup,
+  CButton, CCol, CFormInput,
+  CImage, CInputGroup, CRow,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -12,8 +12,9 @@ import {
 import CIcon from "@coreui/icons-react";
 import {cilDelete, cilMinus, cilPlus} from "@coreui/icons";
 import OrderItem from "src/views/user/item/order/OrderItem";
+import CartItem from "src/views/user/mypage/component/CartItem";
 
-function Order({Cart, total, setOrders}) {
+function Cart({cart, total, setCart, deleteFnc}) {
 
   const calculate_total = (id, count, arr) => {
     let totalPrice = 0
@@ -21,36 +22,41 @@ function Order({Cart, total, setOrders}) {
     let idx = 0
     if (id == null && count == null) {
       for (const item of arr) {
-        totalPrice += (item.item.salePrice + item.item.optionPrice) * item.cnt
+        totalPrice += (item.price) * item.count
       }
     } else {
-      for (const order of orders) {
-        data.push(order)
-        if (data[idx].item.id == id) {
-          data[idx].cnt = count
+      for (const ca of cart) {
+        data.push(ca)
+        if (data[idx].cartItemId == id) {
+          data[idx].count = count
         }
-        totalPrice += (data[idx].item.salePrice + data[idx].item.optionPrice) * data[idx].cnt
+        totalPrice += (data[idx].price) * data[idx].count
         idx++
       }
-      setOrders(data)
+      setCart(data)
     }
     total(totalPrice)
   }
 
 
-  const deleteOrder = (id) => {
-    const data = []
-    for(const order of orders) {
-      data.push(order)
-    }
-    for(const idx in data) {
-      if(id == data[Number(idx)].item.id) {
-        data.splice(Number(idx), 1)
-      }
-    }
-    setOrders(data)
-    calculate_total(null, null, data)
+  const deleteCart = (id) => {
+    // const data = []
+    // for(const ct of cart) {
+    //   data.push(ct)
+    // }
+    // for(const idx in data) {
+    //   if(id == data[Number(idx)].cartItemId) {
+    //     data.splice(Number(idx), 1)
+    //   }
+    // }
+    // setCart(data)
+    // calculate_total(null, null, data)
+    deleteFnc(id)
   }
+
+  useEffect(() => {
+    calculate_total(null, null, cart)
+  }, [cart]);
 
   return (
     <>
@@ -60,7 +66,6 @@ function Order({Cart, total, setOrders}) {
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">이미지</CTableHeaderCell>
             <CTableHeaderCell scope="col">상품명</CTableHeaderCell>
-            <CTableHeaderCell scope="col">카테고리</CTableHeaderCell>
             <CTableHeaderCell scope="col">판매가격</CTableHeaderCell>
             <CTableHeaderCell scope="col">수량</CTableHeaderCell>
             <CTableHeaderCell scope="col"></CTableHeaderCell>
@@ -68,9 +73,9 @@ function Order({Cart, total, setOrders}) {
         </CTableHead>
         <CTableBody>
           {
-            orders.length ?
-              orders.map((it, index) => (
-                <OrderItem it={it} key={index} num={index} total={calculate_total} delFunc={deleteOrder}/>
+            cart.length ?
+              cart.map((it, index) => (
+                <CartItem it={it} key={index} num={index} total={calculate_total} delFunc={deleteCart}/>
               ))
               :
               <CTableRow>
@@ -83,4 +88,4 @@ function Order({Cart, total, setOrders}) {
   );
 }
 
-export default Order;
+export default Cart;
