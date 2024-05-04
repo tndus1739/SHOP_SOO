@@ -58,6 +58,26 @@ public class Item extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "itemGroup_id")
 	private ItemGroup ItemGroup;
-
+	
+	
+	
+	public void reducedCount ( int orderdCount) {
+		
+		int restStock = this.cnt - orderdCount;
+        if(restStock < 0){
+            throw new IllegalArgumentException ("상품의 재고가 부족 합니다. (현재 재고 수량: " + this.cnt + ")");
+        }
+        
+        this.cnt = restStock;
+	} 
+	 
+	public void updateCount (int orderdCount) {
+		if (this.cnt >= orderdCount) {
+			this.cnt -= orderdCount;
+		} else {
+			throw new IllegalArgumentException("재고가 부족하여 주문을 처리할 수 없습니다.");
+		}
+		
+	}      
 
 }

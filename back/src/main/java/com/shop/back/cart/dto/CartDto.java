@@ -10,6 +10,6 @@ public class CartDto {
 	private Long id;
     private int cnt;
     private Long itemId;
-    private Long memberId;
+    private Long email;
 	
 }

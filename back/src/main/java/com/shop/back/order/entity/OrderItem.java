@@ -1,5 +1,6 @@
 package com.shop.back.order.entity;
 
+import com.shop.back.common.BaseEntity;
 import com.shop.back.item.entity.Item;
 
 import jakarta.persistence.Column;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @Entity
 @Getter 
 @Setter
-public class OrderItem  {
+public class OrderItem extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,13 +30,20 @@ public class OrderItem  {
 	 
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-	 private Orders order;
+	 private Orders orders;
 	 
 	 private int orderPrice;
 	 
 	 private int count;
 	 
 	 
-	 
+	 public static OrderItem createOrderItem(Item item, int count){
+	        OrderItem orderItem = new OrderItem();
+	        orderItem.setItem(item);
+	        orderItem.setCount(count);
+	        orderItem.setOrderPrice(item.getTotal());
+	        item.reducedCount(count);
+	        return orderItem;
+	    }
 	 
 }
