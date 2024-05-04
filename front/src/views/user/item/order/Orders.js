@@ -98,6 +98,83 @@ function Orders(props) {
       },
     },
   ]
+  const dummy = {
+    id: 1,
+    status: '',
+    del: 1,
+    member: {
+
+    },
+    orderItems: [
+      {
+        id: 1,
+        item: {
+          itemGroup: {
+            id:1,
+            images:[
+
+            ],
+            colors: {
+
+            },
+            category: {
+
+            }
+          },
+          name: '',
+          total: 20000,
+        },
+        order: null,
+        orderPrice: 60000,
+        count: 3
+      },
+      {
+        id: 2,
+        item: {
+          itemGroup: {
+            id:1,
+            images:[
+
+            ],
+            colors: {
+
+            },
+            category: {
+
+            }
+          },
+          name: '',
+          total: 20000,
+        },
+        order: null,
+        orderPrice: 50000,
+        count: 2
+      },
+      {
+        id: 3,
+        item: {
+          itemGroup: {
+            id:1,
+            images:[
+
+            ],
+            colors: {
+
+            },
+            category: {
+
+            }
+          },
+          name: '',
+          total: 20000,
+        },
+        order: null,
+        orderPrice: 80000,
+        count: 4
+      },
+    ]
+  }
+
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }

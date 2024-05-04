@@ -236,6 +236,9 @@ const ItemForm = () => {
       if (res.data.id) {
         postItemImages(file_item, res.data.id)
       }
+    }).catch((err) => {
+      alert('상품등록 중 오류가 발생했습니다. 다시 등록해주세요')
+      return
     })
 
 
@@ -260,6 +263,10 @@ const ItemForm = () => {
       }
     }).then(res => {
       console.log(res)
+      alert('상품이 등록되었습니다.')
+    }).catch(err => {
+      alert('상품등록 중 오류가 발생했습니다. 다시 등록해주세요')
+      return
     })
   }
 

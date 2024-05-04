@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("/pay/kakaopay")
+@RequestMapping("/pay")
 @RequiredArgsConstructor
 public class PaymentController {
 
@@ -33,7 +33,7 @@ public class PaymentController {
 	private final MemberService memberService;
 	private final MemberRepository memberRepository;
 
-	@PostMapping
+	@PostMapping("/kakaopay")
 	public ResponseEntity<?> kakaoPay(@RequestBody List<KakaoReqDto> payData) {
 		log.info(".....................kakaoPay post.......................");
 		Map<String, String> res = new HashMap<>();
@@ -54,7 +54,7 @@ public class PaymentController {
 		return ResponseEntity.ok(res);
 	}
 
-	@RequestMapping("/complete")
+	@RequestMapping("/kakaopay/complete")
 	public String kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model) {
 		log.info("......................kakaoPaySuccess get......................");
 		log.info("kakaoPaySuccess pg_token : " + pg_token);
@@ -63,13 +63,24 @@ public class PaymentController {
 		return "complete";
 	}
 
-	@RequestMapping("/successFail")
+	@RequestMapping("/kakaopay/successFail")
 	public String kakaoPaySuccessFail() {
 		return "kakaoPaySuccessFail";
 	}
 
-	@RequestMapping("/cancel")
+	@RequestMapping("/kakaopay/cancel")
 	public String kakaoPayCancel() {
 		return "kakaoPayCancel";
+	}
+
+	@GetMapping("/history/{email}")
+	public ResponseEntity<?> mypageHistory(@PathVariable("email") String email) {
+		Map<String, Object> res = new HashMap<>();
+		if(email.trim().equals("")) {
+			Member member = memberRepository.findByEmail(email);
+		} else {
+			res.put("msg", "로그인이 필요한 페이지입니다.");
+		}
+		return ResponseEntity.ok(email);
 	}
 }

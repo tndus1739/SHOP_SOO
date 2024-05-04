@@ -137,18 +137,15 @@ function Item() {
   }
 
   const buyNow = () => {
-    const del = 0
-    if(del) {
-      console.log("del")
-    } else {
-      console.log("asdf")
-    }
-    return
     if(!selectedItem.length) {
       alert('상품 옵션을 선택해주세요')
       return
     } else {
+      for(const it of selectedItem) {
+        it.itemGroupId = group.id
+      }
       console.log(selectedItem)
+      navigator(`/order/${1}`)
       return
       axios.post('http://localhost:3011/item/order/test', selectedItem).then((res) => {
         console.log(res)
@@ -184,6 +181,7 @@ function Item() {
     console.log(items)
     axios.post('http://localhost:3011/cart', items).then((res) => {
       console.log(res)
+      alert('등록되었습니다.')
     })
   }
 
