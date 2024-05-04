@@ -21,7 +21,6 @@ class UserMyPageMemberService {
       console.error('Invalid id:', email);
       return;
     }
-
     return axios.put(SHOP_USER_MYPAGE_MEMBER_API_URL + '/mypage/update/' + email, req, {
       headers: {
         Authorization: token
@@ -29,7 +28,10 @@ class UserMyPageMemberService {
     });
   }
 
-  //user 탈퇴
+  // user 탈퇴
+  withdrawUser(email) {
+    return axios.patch(SHOP_USER_MYPAGE_MEMBER_API_URL + '/mypage/withdraw/' + email);
+  }
 
   //user 비밀번호 일치 확인
   checkPassword(pwd) {

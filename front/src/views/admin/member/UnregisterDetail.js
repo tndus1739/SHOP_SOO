@@ -142,7 +142,7 @@ function UnregisterDetail() {
                   type={'password'}
                   // onInput={pwd}
                   required
-                  value={unregisterData ? unregisterData.pwd : ''}
+                  // value={unregisterData ? unregisterData.pwd : ''}
                   // defaultValue={unregisterData.pwd}
                   onChange={(e) => handleChange('pwd', e.target.value)}
                 />

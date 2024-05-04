@@ -124,7 +124,7 @@ const MyInfoForm = () => {
                   name={'pwd'}
                   type={'password'}
                   required
-                  value={userData ? userData.pwd : ''}
+                  // value={userData ? userData.pwd : ''}
                   onChange={(e) => handleChange('pwd', e.target.value)}
                 />
               </CCol>

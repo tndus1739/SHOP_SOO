@@ -151,7 +151,7 @@ function MemberDetail({ type }) {
                   name={'pwd'}
                   type={'password'}
                   required
-                  value={memberData ? memberData.pwd : ''}
+                  // value={memberData ? memberData.pwd : ''}
                   onChange={(e) => handleChange('pwd', e.target.value)}
                 />
               </CCol>

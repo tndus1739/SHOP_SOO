@@ -14,7 +14,6 @@ function Logout() {
 
     alert(auth + " 계정이 로그아웃 되었습니다.");
     setAuth(null);
-
     navigate("/");
   };
 
