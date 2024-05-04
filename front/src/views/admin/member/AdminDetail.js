@@ -142,7 +142,7 @@ function AdminDetail() {
                   type={'password'}
                   // onInput={pwd}
                   required
-                  value={adminData ? adminData.pwd : ''}
+                  // value={adminData ? adminData.pwd : ''}
                   // defaultValue={adminData.pwd}
                   onChange={(e) => handleChange('pwd', e.target.value)}
                 />

@@ -186,31 +186,18 @@ public class MemberController {
     }
 
     //회원 탈퇴 (Role: UNREGISTER으로 변경)
-    @PatchMapping("/withdraw/{email}")
-    public ResponseEntity<String> withdrawMember(@PathVariable String email, @RequestHeader("Authorization") String token) {
-
-        //JWT 토큰에서 사용자 이메일 추출
-        String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
-        System.out.println("token: " + token);
-
-        //사용자의 존재 여부 확인
-        Member member = memberRepository.findByEmail(memberEmail);
-        if (member == null) {
-            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-        }
-        System.out.println("memberEmail: " + memberEmail);
-
-        ResponseEntity<String> validationResponse = validateWithdrawRequest(memberEmail, email);
-            if (validationResponse != null) {
-                return validationResponse;
-        }
-
-        System.out.println("email: " + email);
-
-        if (service.withdrawMember(email)) {
-            return ResponseEntity.ok("회원 탈퇴가 완료되었습니다");
-        } else {
-            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    @PatchMapping("/mypage/withdraw/{email}")
+    public ResponseEntity<String> withdrawMember(@PathVariable String email) {
+        try {
+            // 회원 탈퇴 처리 수행
+            if (service.withdrawMember(email)) {
+                return ResponseEntity.ok("회원 탈퇴가 완료되었습니다");
+            } else {
+                return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("서버 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
