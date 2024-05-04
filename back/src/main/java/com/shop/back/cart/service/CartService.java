@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shop.back.cart.dto.CartDetailDto;
 import com.shop.back.cart.dto.CartItemDto;
+import com.shop.back.cart.dto.CartOrderDto;
 import com.shop.back.cart.entity.Cart;
 import com.shop.back.cart.entity.CartItem;
 import com.shop.back.cart.repository.CartItemRepository;
@@ -16,6 +17,8 @@ import com.shop.back.item.entity.Item;
 import com.shop.back.item.repository.ItemRepository;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.repository.MemberRepository;
+import com.shop.back.order.dto.OrderDto;
+import com.shop.back.order.service.OrderService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +33,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
-    
+    private final OrderService orderService;
     
     
     // 장바구니 추가
@@ -116,5 +119,42 @@ public class CartService {
 	 }
 	 
 	// 주문한 상품 장바구니에서 제거 
+	 
+	 @Transactional
+	 public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email){
+	    	
+	    	
+	        List<OrderDto> orderDtoList = new ArrayList<>();
+
+	            
+	     
+	        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+	            CartItem cartItem = cartItemRepository
+	                            .findById(cartOrderDto.getCartItemId())
+	                            .orElseThrow(EntityNotFoundException::new);
+
+	            //장바구니 아이템 테이블의 정보를 끄집어 내서 order 테이블에 저장하기위해서 
+	            // orderDto 제품번호, 주문한 갯수 정보만 넣어서 orderDtoList에 저장 
+	            OrderDto orderDto = new OrderDto();
+	            orderDto.setItemId(cartItem.getItem().getId());
+	            orderDto.setCount(cartItem.getCount());
+	            
+	            orderDtoList.add(orderDto);
+	        }
+
+	        
+	        //cert_item 테이블의 값을 order, order_item에 값을 Insert 
+	        Long orderId = orderService.saveOrder(orderDtoList, email);
+	        
+	        // cert_item 테이블의 선택된 itemId의 대해서 제거 
+	        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+	            CartItem cartItem = cartItemRepository
+	                            .findById(cartOrderDto.getCartItemId())
+	                            .orElseThrow(EntityNotFoundException::new);
+	            cartItemRepository.delete(cartItem);
+	        }
+
+	        return orderId;
+	    }
 	 
 }

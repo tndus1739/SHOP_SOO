@@ -17,9 +17,10 @@ public class Orders extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "order_id")
 	private Long id;
 
-	private String status;
+	private String status;    // 결제대기 , 결제완료
 
 	private int del;
 
@@ -28,7 +29,28 @@ public class Orders extends BaseEntity {
 	@JoinColumn(name = "member_id")
 	private Member member;
 	
-	@OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+	
+	@OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)  // mappedBy : 연관관계의 주인
 	@JoinColumn(name = "orders_id")
 	private List<OrderItem> orderItems = new ArrayList<>();
+	
+	
+	public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrders(this);
+    }
+	
+	public static Orders createOrder(Member member, List<OrderItem> orderItemList) {
+        Orders order = new Orders();
+        order.setMember(member);
+
+        for(OrderItem orderItem : orderItemList) {
+            order.addOrderItem(orderItem);
+        }
+
+        order.setStatus("결제대기");
+        return order;
+    }
+
+	
 }
