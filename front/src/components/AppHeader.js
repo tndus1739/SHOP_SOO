@@ -1,7 +1,7 @@
-import { AuthContext } from "../context/AuthProvider";
+import {AuthContext} from "../context/AuthProvider";
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import {NavLink, useNavigate} from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import {
   CContainer,
   CDropdown,
@@ -29,15 +29,15 @@ import {
   cilHeart
 } from '@coreui/icons'
 
-import { AppBreadcrumb } from './index'
-import { AppHeaderDropdown } from './header/index'
+import {AppBreadcrumb} from './index'
+import {AppHeaderDropdown} from './header/index'
 import {AuthModeDispatch, AuthModeInfo} from "src/layout/DefaultLayout";
 
 const AppHeader = () => {
 
-  const { auth, setAuth } = useContext(AuthContext);
+  const {auth, setAuth} = useContext(AuthContext);
   const headerRef = useRef()
-  const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
+  const {colorMode, setColorMode} = useColorModes('coreui-free-react-admin-template-theme')
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
@@ -46,9 +46,9 @@ const AppHeader = () => {
   const {changeMode} = useContext(AuthModeDispatch)
   const navigator = useNavigate()
   const change_mode = () => {
-    if(mode === 'ADMIN') {
+    if (mode === 'ADMIN') {
       changeMode('USER')
-    } else if(mode === 'USER') {
+    } else if (mode === 'USER') {
       changeMode('ADMIN')
     }
   }
@@ -56,7 +56,7 @@ const AppHeader = () => {
   useEffect(() => {
     document.addEventListener('scroll', () => {
       headerRef.current &&
-        headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
+      headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
     })
   }, [])
 
@@ -71,65 +71,70 @@ const AppHeader = () => {
         {/*</CHeaderToggler>*/}
         <CHeaderNav className="d-none d-md-flex">
 
-    {
-      (auth) ?
-        <>
-        {/* 로그인 O*/}
+          {
+            (auth) ?
+              <>
+                {/* 로그인 O*/}
 
-        <CNavItem>
-            <CNavLink onClick={() => {navigator('/logout')}} style={{cursor: 'pointer'}}>로그아웃</CNavLink>
-          </CNavItem>
+                <CNavItem>
+                  <CNavLink onClick={() => {
+                    navigator('/logout')
+                  }} style={{cursor: 'pointer'}}>로그아웃</CNavLink>
+                </CNavItem>
 
-          <CNavItem>
-            <CNavLink onClick={() => {navigator('/mypage/myHome')}} style={{cursor: 'pointer'}}>마이페이지</CNavLink>
-          </CNavItem>
+                <CNavItem>
+                  <CNavLink onClick={() => {
+                    navigator('/mypage/myHome')
+                  }} style={{cursor: 'pointer'}}>마이페이지</CNavLink>
+                </CNavItem>
 
-          <CNavItem>
-            <CNavLink href="#">장바구니</CNavLink>
-          </CNavItem>
+                <CNavItem>
+                  <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg"/>{mode}</CButton>
+                </CNavItem>
+              </>
+              :
 
-          <CNavItem>
-            <CNavLink href="#">좋아요</CNavLink>
-          </CNavItem>
+              // 로그인 X
 
-          <CNavItem>
-            <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg" />{mode}</CButton>
-          </CNavItem>
-          </>
-            :
+              <>
 
-        // 로그인 X
+                <CNavItem>
+                  <CNavLink onClick={() => {
+                    navigator('/signup')
+                  }} style={{cursor: 'pointer'}}>회원가입</CNavLink>
+                </CNavItem>
 
-            <>
+                <CNavItem>
+                  <CNavLink onClick={() => {
+                    navigator('/signin')
+                  }} style={{cursor: 'pointer'}}>로그인</CNavLink>
+                </CNavItem>
 
-            <CNavItem>
-            <CNavLink onClick={() => {navigator('/signup')}} style={{cursor: 'pointer'}}>SignUp</CNavLink>
-          </CNavItem>
+                <CNavItem>
+                  <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg"/>{mode}</CButton>
+                </CNavItem>
 
-            <CNavItem>
-                <CNavLink onClick={() => {navigator('/signin')}} style={{cursor: 'pointer'}}>SignIn</CNavLink>
-            </CNavItem>
+              </>
 
-          <CNavItem>
-            <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg" />{mode}</CButton>
-          </CNavItem>
-
-          </>
-
-        }
-
+          }
 
 
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilCart} className="text-primary" size="xl" />
+            <CNavLink href="#" onClick={(e) => {
+              e.preventDefault()
+              navigator('/mypage/myCart')
+            }}>
+              <CIcon icon={cilCart} className="text-primary" size="xl"/>
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilHeart} style={{'--ci-primary-color': 'red'}} size="xl" />
+            <CNavLink href="#" onClick={(e) => {
+              e.preventDefault()
+              navigator('/mypage/myLike')
+            }}>
+              <CIcon icon={cilHeart} style={{'--ci-primary-color': 'red'}} size="xl"/>
             </CNavLink>
           </CNavItem>
 
@@ -188,7 +193,7 @@ const AppHeader = () => {
         {/*</CHeaderNav> */}
       </CContainer>
       <CContainer className="px-4" fluid>
-        <AppBreadcrumb />
+        <AppBreadcrumb/>
       </CContainer>
     </CHeader>
   )

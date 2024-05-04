@@ -42,24 +42,32 @@ const MyCart = () => {
             <CCardBody>
               <MyPageTabs/>
               <CCardBody>
-                {/*내용*/}
-                장바구니
                 <Cart cart={cart} total={setTotal} setCart={setCart} deleteFnc={del}/>
-                <CRow>
-                  <CCol style={{textAlign: 'center'}}>
-                    <strong style={{fontSize: '23px'}}>전체 금액 : {addCommas(Number(total))}</strong>
-                  </CCol>
-                </CRow>
+                {
+                  total ?
+                  <CRow>
+                    <CCol style={{textAlign: 'center'}}>
+                      <strong style={{fontSize: '23px'}}>전체 금액 : {addCommas(Number(total))}</strong>
+                    </CCol>
+                  </CRow>
+                    :
+                    <></>
+                }
               </CCardBody>
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
-      <CRow>
-        <CCol style={{textAlign: 'center'}}>
-          <CButton color={'dark'} size={'lg'} onClick={buy}>주문하기</CButton>
-        </CCol>
-      </CRow>
+      {
+        total ?
+        <CRow>
+          <CCol style={{textAlign: 'center'}}>
+            <CButton color={'dark'} size={'lg'} onClick={buy}>주문하기</CButton>
+          </CCol>
+        </CRow>
+          :
+          <></>
+      }
     </>
   );
 };
