@@ -3,6 +3,9 @@ package com.shop.back.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -123,14 +126,48 @@ public class JwtTokenUtil implements Serializable {
     }
 
     //refresh token
-    public String generateRefreshToken(UserDetails userDetails) {
-        return Jwts.builder()
+    public String generateRefreshToken(UserDetails userDetails, HttpServletResponse response) {
+        String refreshToken = Jwts.builder()
                 .setClaims(new HashMap<>())
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
+
+        // refreshToken을 쿠키에 저장
+        createCookie(response, "refreshToken", refreshToken, refreshExpirationMs / 1000, true, true, "/");
+
+        return refreshToken;
+    }
+
+    private void createCookie(HttpServletResponse response, String name, String value, int maxAge, boolean httpOnly, boolean secure, String path) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(maxAge);
+        cookie.setHttpOnly(httpOnly);
+        cookie.setSecure(secure);
+        cookie.setPath(path);
+        response.addCookie(cookie);
+    }
+
+    // 쿠키에서 refreshToken을 가져옴
+    public String getRefreshTokenFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("refreshToken")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    public void expireCookie(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie(refreshToken, null);
+        cookie.setMaxAge(0); // 만료 시간을 0으로 설정하여 즉시 만료
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
 }

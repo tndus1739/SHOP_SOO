@@ -12,6 +12,7 @@ import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
 import com.shop.back.member.service.MemberService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -71,10 +72,17 @@ public class MemberController {
 
     //로그인
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req, HttpServletResponse response) {
         System.out.println("MemberController login " + new Date());
-        
-        return ResponseEntity.ok(service.login(req));
+
+        return ResponseEntity.ok(service.login(req, response));
+    }
+
+    //로그아웃
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        // refreshToken 쿠키를 만료시킵니다.
+        jwtTokenUtil.expireCookie(response, "refreshToken");
     }
 
     //마이페이지 회원 조회
