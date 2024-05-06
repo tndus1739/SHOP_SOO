@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter 
 @Setter
 
-public class OrderItemDto {
-
+public class OrderItemDto {    // 주문 상품 정보
+	
 	
     private String name; 
     private int count; 

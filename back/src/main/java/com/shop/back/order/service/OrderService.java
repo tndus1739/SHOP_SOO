@@ -4,20 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.querydsl.core.types.Order;
+import com.shop.back.item.entity.File_item;
 import com.shop.back.item.entity.Item;
 import com.shop.back.item.repository.File_itemRepository;
 import com.shop.back.item.repository.ItemRepository;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.repository.MemberRepository;
 import com.shop.back.order.dto.OrderDto;
+import com.shop.back.order.dto.OrderHistoryDto;
+import com.shop.back.order.dto.OrderItemDto;
 import com.shop.back.order.entity.OrderItem;
 import com.shop.back.order.entity.Orders;
 import com.shop.back.order.repository.OrderRepository;
 
-import groovyjarjarantlr4.v4.parse.ANTLRParser.finallyClause_return;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +72,7 @@ public class OrderService {
     }
 
     
-    // 상품 주문
+    // 상품 상세페이징테서 바로 주문
     
     public Long order(OrderDto orderDto, String email){
 
@@ -88,9 +90,32 @@ public class OrderService {
         return order.getId();
     }
     
-   
+   //  주문 목록 조회
+    @Transactional
+    public List <OrderHistoryDto> getOrderList(String email) {
 
+        List<Orders> orders = orderRepository.findByMemberEmail(email);
+       
 
+        List<OrderHistoryDto> orderHistoryDto = new ArrayList<>();
 
+        for (Orders order : orders) {
+            OrderHistoryDto orderHistoryDtos = new OrderHistoryDto(order);
+            List<OrderItem> orderItems = order.getOrderItems();
+            for (OrderItem orderItem : orderItems) {
+                File_item file_item = file_itemRepository.findByIdAndIsMainOrderByIdAsc(orderItem.getItem().getId(), 1);
+                OrderItemDto orderItemDto =
+                        new OrderItemDto(orderItem, file_item.getPath());
+                orderHistoryDtos.addOrderItemDto(orderItemDto);
+            }
 
+            orderHistoryDto.add(orderHistoryDtos);
+        }
+
+        return orderHistoryDto;
+    }
 }
+
+
+
+
