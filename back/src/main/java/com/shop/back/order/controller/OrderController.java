@@ -107,14 +107,14 @@ public class OrderController {
 		
 		
 		
-		 // 장바구니 상품 삭제
-//		   @DeleteMapping("cart/cartItem/{cartItemId}")
-//		   public @ResponseBody ResponseEntity deleteCartItem(@PathVariable("cartItemId") Long cartItemId){
-//
-//
-//		       cartService.deleteCartItem(cartItemId);
-//
-//		       return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
-//		   }
+	// 주문 취소
+		
+		 @DeleteMapping("order/{orderId}")
+		   public  ResponseEntity cancelOrder (@PathVariable("orderId") Long orderId){
+
+			 orderService.cancelOrder(orderId);
+
+		       return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+		   }
 	
 }
