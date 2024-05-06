@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 function OrderItem({it, num, total, delFunc}) {
   const navigator = useNavigate()
 
-  const [count, setCount] = useState(it.cnt)
+  const [count, setCount] = useState(it.count)
   const minus = () => {
     if (count == 1) {
       return
@@ -39,10 +39,10 @@ function OrderItem({it, num, total, delFunc}) {
     <>
       <CTableRow>
         <CTableHeaderCell scope="row">{num + 1}</CTableHeaderCell>
-        <CTableDataCell onClick={() => itemDetail(it.groupId)}>
+        <CTableDataCell onClick={() => itemDetail(it.item.itemGroup.id)}>
           {
-            it.images &&
-            it.images.map((img, idx) => (
+            it.item.itemGroup.images &&
+            it.item.itemGroup.images.map((img, idx) => (
               img.isMain ?
                 <CImage src={`http://localhost:3011${img.path}`} height={60} key={idx}
                         style={{cursor: 'pointer'}}/>
@@ -51,12 +51,11 @@ function OrderItem({it, num, total, delFunc}) {
             ))
           }
         </CTableDataCell>
-        <CTableDataCell onClick={() => itemDetail(it.groupId)}>
+        <CTableDataCell onClick={() => itemDetail(it.item.itemGroup.id)}>
           <strong style={{cursor: 'pointer'}}>
             {it.item.name}
           </strong>
         </CTableDataCell>
-        <CTableDataCell>{it.category.name}</CTableDataCell>
         <CTableDataCell>{addCommas(Number(it.item.salePrice) + Number(it.item.optionPrice))}</CTableDataCell>
         <CTableDataCell width={'10%'}>
           <CInputGroup className="mb-1" size={'sm'}>

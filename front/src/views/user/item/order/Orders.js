@@ -27,160 +27,16 @@ function Orders(props) {
   const [kakaopay, setKakaopay] = useState('')
 
 
-  const mock = [
-    {
-      groupId: 954,
-      cnt: 3,
-      item: {
-        id: 969,
-        name: 'mock1',
-        colors: {
-          name: 'black'
-        },
-        itemSize: 'XL',
-        optionPrice: 1000,
-        salePrice: 30000,
-      },
-      images: [
-        {
-          isMain: 1,
-          path: '/images/item/8061f475-f8bd-4b2f-8f4e-f88f7d58514e.jpg'
-        },
-      ],
-      category: {
-        name: '반팔티'
-      },
-    },
-    {
-      groupId: 954,
-      cnt: 2,
-      item: {
-        id: 968,
-        name: 'mock2',
-        colors: {
-          name: 'red'
-        },
-        itemSize: 'XL',
-        optionPrice: 1100,
-        salePrice: 30000,
-      },
-      images: [
-        {
-          isMain: 1,
-          path: '/images/item/8061f475-f8bd-4b2f-8f4e-f88f7d58514e.jpg'
-        },
-      ],
-      category: {
-        name: '반팔티'
-      },
-    },
-    {
-      groupId: 954,
-      cnt: 5,
-      item: {
-        id: 970,
-        name: 'mock3',
-        colors: {
-          name: 'blue'
-        },
-        itemSize: 'XL',
-        optionPrice: 1200,
-        salePrice: 30000,
-      },
-      images: [
-        {
-          isMain: 1,
-          path: '/images/item/8061f475-f8bd-4b2f-8f4e-f88f7d58514e.jpg'
-        },
-      ],
-      category: {
-        name: '반팔티'
-      },
-    },
-  ]
-  const dummy = {
-    id: 1,
-    status: '',
-    del: 1,
-    member: {
-
-    },
-    orderItems: [
-      {
-        id: 1,
-        item: {
-          itemGroup: {
-            id:1,
-            images:[
-
-            ],
-            colors: {
-
-            },
-            category: {
-
-            }
-          },
-          name: '',
-          total: 20000,
-        },
-        order: null,
-        orderPrice: 60000,
-        count: 3
-      },
-      {
-        id: 2,
-        item: {
-          itemGroup: {
-            id:1,
-            images:[
-
-            ],
-            colors: {
-
-            },
-            category: {
-
-            }
-          },
-          name: '',
-          total: 20000,
-        },
-        order: null,
-        orderPrice: 50000,
-        count: 2
-      },
-      {
-        id: 3,
-        item: {
-          itemGroup: {
-            id:1,
-            images:[
-
-            ],
-            colors: {
-
-            },
-            category: {
-
-            }
-          },
-          name: '',
-          total: 20000,
-        },
-        order: null,
-        orderPrice: 80000,
-        count: 4
-      },
-    ]
-  }
-
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   const getOrder = () => {
-    setOrders(mock)
+    // setOrders(mock)
+    axios.get(`http://localhost:3011/order/test/${localStorage.getItem('email')}/${orderId}`).then(res => {
+      console.log(res)
+      setOrders(res.data.orderItems)
+    })
   }
 
   const payment = () => {
@@ -249,7 +105,7 @@ function Orders(props) {
   useEffect(() => {
     if (kakaopay == 'success') {
       alert("결제가 완료되었습니다.")
-      navigator('/')
+      navigator('/mypage/myOrder')
     } else {
       if (typeof kakaopay == 'string' && kakaopay.trim()) {
         alert(kakaopay)

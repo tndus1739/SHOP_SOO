@@ -143,14 +143,16 @@ function Item() {
     } else {
       for(const it of selectedItem) {
         it.itemGroupId = group.id
+        it.itemId = it.id
+        it.email = localStorage.getItem('email')
       }
       console.log(selectedItem)
-      navigator(`/order/${1}`)
-      return
+      // return
       axios.post('http://localhost:3011/item/order/test', selectedItem).then((res) => {
         console.log(res)
-        const orderId = 1
-        navigator(`/order/${1}`)
+        if(res.data) {
+          navigator(`/order/${res.data}`)
+        }
       })
     }
   }

@@ -60,7 +60,6 @@ function Order({orders, total, setOrders}) {
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">이미지</CTableHeaderCell>
             <CTableHeaderCell scope="col">상품명</CTableHeaderCell>
-            <CTableHeaderCell scope="col">카테고리</CTableHeaderCell>
             <CTableHeaderCell scope="col">판매가격</CTableHeaderCell>
             <CTableHeaderCell scope="col">수량</CTableHeaderCell>
             <CTableHeaderCell scope="col"></CTableHeaderCell>
