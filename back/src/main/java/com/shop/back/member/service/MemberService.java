@@ -12,6 +12,7 @@ import com.shop.back.member.dto.response.MemberResponse;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -89,8 +92,7 @@ public class MemberService {
         }
     }
 
-    public LoginResponse login(LoginRequest req) {
-
+    public LoginResponse login(LoginRequest req, HttpServletResponse response) {
         Member member = memberRepository.findByEmail(req.getEmail());
         if (member.getRole() == Role.UNREGISTER) {
             throw new MemberException("탈퇴한 사용자입니다.", HttpStatus.FORBIDDEN);
@@ -100,7 +102,7 @@ public class MemberService {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
         final String accessToken = jwtTokenUtil.generateAccessToken(userDetails);
-        final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+        final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails, response); // 수정된 부분
 
         System.out.println("Access Token: " + accessToken);
         System.out.println("Refresh Token: " + refreshToken);
