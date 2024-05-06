@@ -70,11 +70,13 @@ public class PaymentController {
 
     @RequestMapping("/kakaopay/successFail")
     public String kakaoPaySuccessFail() {
+        kakaopay.setPaymentList(new ArrayList<>());
         return "kakaoPaySuccessFail";
     }
 
     @RequestMapping("/kakaopay/cancel")
     public String kakaoPayCancel() {
+        kakaopay.setPaymentList(new ArrayList<>());
         return "kakaoPayCancel";
     }
 
