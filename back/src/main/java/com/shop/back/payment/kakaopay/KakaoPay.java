@@ -8,6 +8,7 @@ import com.shop.back.payment.entity.PaymentHistory;
 import com.shop.back.payment.repository.PaymentHistoryRepository;
 import com.shop.back.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,14 +42,14 @@ public class KakaoPay {
 
 //	private PaymentHistory payHistory = new PaymentHistory();
 
+	@Setter
 	private List<Payment> paymentList = new ArrayList<>();
 
 	private final PaymentHistoryRepository paymentHistoryRepository;
 	private final PaymentRepository paymentRepository;
 
-
 	public String kakaoPayReady(List<KakaoReqDto> payData, Member mb) {
-
+		paymentList = new ArrayList<>();
 		String title = "";
 		String total_price = "0";
 		List<String> titles = new ArrayList<>();
@@ -95,8 +96,8 @@ public class KakaoPay {
 		params.add("total_amount", total_price);
 		params.add("tax_free_amount", "0");
 		params.add("approval_url", "http://localhost:3011/pay/kakaopay/complete");
-		params.add("cancel_url", "http://localhost:8011/pay/kakaopay/cancel");
-		params.add("fail_url", "http://localhost:8011/pay/kakaopay/successFail");
+		params.add("cancel_url", "http://localhost:3011/pay/kakaopay/cancel");
+		params.add("fail_url", "http://localhost:3011/pay/kakaopay/successFail");
 
 		HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 
@@ -111,9 +112,11 @@ public class KakaoPay {
 		} catch (RestClientException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			paymentList = new ArrayList<>();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			paymentList = new ArrayList<>();
 		}
 
 		return "/pay";
@@ -169,9 +172,11 @@ public class KakaoPay {
 		} catch (RestClientException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			paymentList = new ArrayList<>();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			paymentList = new ArrayList<>();
 		}
 
 		return null;

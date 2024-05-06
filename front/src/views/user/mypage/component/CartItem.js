@@ -65,7 +65,7 @@ function CartItem({it, num, total, delFunc}) {
         </CTableDataCell>
         {/*<CTableDataCell>{it.category.name}</CTableDataCell>*/}
         <CTableDataCell>{addCommas(Number(it.price))}</CTableDataCell>
-        <CTableDataCell width={'10%'}>
+        <CTableDataCell width={'20%'}>
           <CInputGroup className="mb-1" size={'sm'}>
             <CButton type="button" color="secondary" variant="outline" id="button-addon1"
                      size={'sm'} style={{width: '30%'}} onClick={minus}>

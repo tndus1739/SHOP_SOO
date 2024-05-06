@@ -57,7 +57,7 @@ function OrderItem({it, num, total, delFunc}) {
           </strong>
         </CTableDataCell>
         <CTableDataCell>{addCommas(Number(it.item.salePrice) + Number(it.item.optionPrice))}</CTableDataCell>
-        <CTableDataCell width={'10%'}>
+        <CTableDataCell width={'20%'}>
           <CInputGroup className="mb-1" size={'sm'}>
             <CButton type="button" color="secondary" variant="outline" id="button-addon1"
                      size={'sm'} style={{width: '30%'}} onClick={minus}>
