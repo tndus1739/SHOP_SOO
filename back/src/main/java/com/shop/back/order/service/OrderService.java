@@ -114,6 +114,18 @@ public class OrderService {
 
         return orderHistoryDto;
     }
+    
+    
+    // 주문 취소
+
+    public void cancelOrder(Long orderId){
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+        order.setDel(0);  // 주문취소시 0으로 변경
+        order.cancelOrder();
+        orderRepository.save(order);
+    }
+
 }
 
 

@@ -78,6 +78,11 @@ public class Item extends BaseEntity {
 			throw new IllegalArgumentException("재고가 부족하여 주문을 처리할 수 없습니다.");
 		}
 		
+	}
+
+	public void addStock(int count) {
+		this.cnt += cnt;
+		
 	}      
 
 }
