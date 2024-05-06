@@ -25,7 +25,7 @@ public class PaymentHistory extends BaseEntity {
 	private int totalPrice;
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "payment_id")
+	@JoinColumn(name = "paymentHistory_id")
 	private List<Payment> paymentList;
 
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -39,7 +39,7 @@ public class KakaoPay {
 
 	private Member member;
 
-	private PaymentHistory payHistory = new PaymentHistory();
+//	private PaymentHistory payHistory = new PaymentHistory();
 
 	private List<Payment> paymentList = new ArrayList<>();
 
@@ -150,6 +150,7 @@ public class KakaoPay {
 			log.info("" + kakaoPayApprovalVO);
 			log.info("member : " + member.getEmail());
 		//  결제정보 db에 저장
+			PaymentHistory payHistory = new PaymentHistory();
 			payHistory.setPayType("KakaoPay");
 			payHistory.setTid(kakaoPayApprovalVO.getTid());
 			payHistory.setTitle(kakaoPayReadyVO.getItem_name());
@@ -161,6 +162,7 @@ public class KakaoPay {
 				payment.setPaymentHistory(savedPayHistory);
 				Payment savedPay = paymentRepository.save(payment);
 			}
+			paymentList = new ArrayList<>();
 
 			return kakaoPayApprovalVO;
 

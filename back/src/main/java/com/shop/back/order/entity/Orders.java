@@ -31,7 +31,7 @@ public class Orders extends BaseEntity {
 	
 	
 	@OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL)  // mappedBy : 연관관계의 주인
-	@JoinColumn(name = "orders_id")
+	@JoinColumn(name = "order_id")
 	private List<OrderItem> orderItems = new ArrayList<>();
 	
 	

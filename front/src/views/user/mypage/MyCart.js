@@ -3,8 +3,10 @@ import MyPageTabs from "src/views/user/mypage/MyPageTabs";
 import {CButton, CCard, CCardBody, CCol, CRow} from "@coreui/react";
 import axios from "axios";
 import Cart from "src/views/user/mypage/component/Cart";
+import {useNavigate} from "react-router-dom";
 
 const MyCart = () => {
+  const navigator = useNavigate()
   const [cart, setCart] = useState([])
   const [total, setTotal] = useState(0)
 
@@ -20,7 +22,14 @@ const MyCart = () => {
   }
 
   const buy = () => {
-
+    console.log(cart)
+    for(const c of cart) {
+      c.email = localStorage.getItem('email')
+    }
+    axios.post('http://localhost:3011/item/order/test', cart).then(res => {
+      console.log(res)
+      navigator(`/order/${res.data}`)
+    })
   }
 
   const del = (id) => {
@@ -31,6 +40,11 @@ const MyCart = () => {
   }
 
   useEffect(() => {
+    const email = localStorage.getItem('email')
+    if(!email) {
+      alert('로그인이 필요한 페이지입니다.')
+      navigator(-1)
+    }
     getCart()
   }, []);
 

@@ -188,7 +188,7 @@ const routes = [
   { path: '/mypage/myLike', name: '마이페이지_좋아요', element: MyLike },
   { path: '/mypage/myWithout', name: '마이페이지_탈퇴', element: MyWithout },
   { path: '/order/:orderId', name: '주문', element: Order},
-  { path: '/order', name: '주문', element: Order},
+  // { path: '/order', name: '주문', element: Order},
 ]
 
 export default routes

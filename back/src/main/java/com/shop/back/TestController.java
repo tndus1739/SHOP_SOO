@@ -4,30 +4,37 @@ import com.shop.back.cart.entity.Cart;
 import com.shop.back.category.entity.Category;
 import com.shop.back.category.repository.CategoryRepository;
 import com.shop.back.item.dto.ItemFormDto;
+import com.shop.back.item.entity.File_item;
 import com.shop.back.item.entity.Item;
 import com.shop.back.item.entity.ItemGroup;
 import com.shop.back.item.repository.ItemGroupRepository;
+import com.shop.back.item.repository.ItemRepository;
 import com.shop.back.like.entity.Likes;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.response.JoinResponse;
+import com.shop.back.member.entity.Member;
+import com.shop.back.member.repository.MemberRepository;
+import com.shop.back.order.entity.OrderItem;
+import com.shop.back.order.entity.Orders;
+import com.shop.back.order.repository.OrderItemRepository;
+import com.shop.back.order.repository.OrderRepository;
 import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RestController
@@ -35,6 +42,10 @@ import java.util.Map;
 public class TestController {
 	private final CategoryRepository categoryRepository;
 	private final ItemGroupRepository itemGroupRepository;
+	private final ItemRepository itemRepository;
+	private final MemberRepository memberRepository;
+	private final OrderRepository orderRepository;
+	private final OrderItemRepository orderItemRepository;
 
 //	@PostMapping("/test")
 //	public ResponseEntity<?> test() {
@@ -165,7 +176,55 @@ public class TestController {
 	@PostMapping("/item/order/test")
 	public ResponseEntity<?> order(@RequestBody List<OrderDtoTest> orderDtoTest) {
 		System.out.println(orderDtoTest);
-		return ResponseEntity.ok(orderDtoTest);
+		Member member = null;
+		String email = "";
+		Long orderId = null;
+		if(!orderDtoTest.isEmpty()) {
+			email = orderDtoTest.get(0).getEmail();
+			member = memberRepository.findByEmail(email);
+			Optional.ofNullable(member).orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+			if(!member.getRole().equals("USER") || !member.getRole().equals("ADMIN")) {
+				new RuntimeException("권한 문제");
+			}
+		} else {
+			new RuntimeException("주문정보가 null입니다.");
+		}
+
+		Orders orders = new Orders();
+		orders.setDel(1);
+		orders.setMember(member);
+		orders.setStatus("결제대기");
+		orderId = orderRepository.save(orders).getId();
+
+		for(OrderDtoTest odt : orderDtoTest) {
+			Optional<Item> opi = itemRepository.findById(odt.getItemId());
+			if(opi.isPresent()) {
+				Item item = opi.get();
+				OrderItem orderItem = OrderItem.createOrderItem(item, odt.getCount());
+				orderItem.setOrders(orders);
+				orderItemRepository.save(orderItem);
+			}
+		}
+
+		return ResponseEntity.ok(orderId);
+	}
+
+	@GetMapping("/order/test/{email}/{orderId}")
+	public ResponseEntity<?> getOrder(@PathVariable("email") String email, @PathVariable("orderId") Long orderId) {
+		Optional<Orders> op = orderRepository.findById(orderId);
+		Orders orders = null;
+		if(op.isPresent()) {
+			orders = op.get();
+			for(OrderItem oi : orders.getOrderItems()) {
+				oi.setOrders(null);
+				oi.getItem().getItemGroup().setItems(null);
+			}
+		} else {
+            throw new RuntimeException("주문정보를 찾을 수 없습니다.");
+		}
+
+
+		return ResponseEntity.ok(orders);
 	}
 }
 
