@@ -24,6 +24,7 @@ import com.shop.back.item.service.ItemService;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.repository.MemberRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,6 +38,7 @@ public class CartController {
 
 	//  장바구니 추가
 	@PostMapping("/cart")
+	@Operation (summary = "addCart() : 장바구니에 상품을 추가하는 API")
 
 		 public ResponseEntity<?> addCart(@RequestBody List<CartItemDto> cartItems ) {
 		        List<Long> cartItemIds = new ArrayList<>();
@@ -85,6 +87,7 @@ public class CartController {
 	// 장바구니 조회 
 	
 	@GetMapping("/cart/{email}")
+	@Operation (summary = "getCartList() : 장바구니를 조회하는 API")
     public ResponseEntity<List<CartDetailDto>> getCartList(@PathVariable (name = "email") String email) {
         List<CartDetailDto> cartDetailList = cartService.getCartList(email);
         return new ResponseEntity<>(cartDetailList, HttpStatus.OK);
@@ -93,6 +96,7 @@ public class CartController {
 
    // 장바구니 수정
    @PutMapping("cartItem/{cartItemId}/{count}")
+   @Operation (summary = "updateCartItem() : 장바구니에 추가된 상품을 수정하는 API")
    public @ResponseBody ResponseEntity updateCartItem(@PathVariable("cartItemId") Long cartItemId, @PathVariable("count") int count){
 	   System.out.println(count);
        if(count <= 0){
@@ -107,6 +111,7 @@ public class CartController {
    
    // 장바구니 상품 삭제
    @DeleteMapping("cart/cartItem/{cartItemId}")
+   @Operation (summary = "deleteCartItem() : 장바구니에 추가된 상품을 삭제하는 API")
    public @ResponseBody ResponseEntity deleteCartItem(@PathVariable("cartItemId") Long cartItemId){
 
 

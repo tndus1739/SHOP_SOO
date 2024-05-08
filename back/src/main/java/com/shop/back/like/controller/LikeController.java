@@ -2,6 +2,8 @@ package com.shop.back.like.controller;
 
 import com.shop.back.like.entity.Likes;
 import com.shop.back.like.service.LikesService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class LikeController {
 	private final LikesService likesService;
 
 	@PostMapping("/{itemGroupId}/{email}")
+	@Operation (summary = "post() : 상품에 좋아요 생성하는 API")
 	public ResponseEntity<?> post(@PathVariable("itemGroupId") Long itemGroupId, @PathVariable("email") String email) {
 		Map<String, String> res = new HashMap<>();
 		likesService.post(itemGroupId, email);
@@ -28,6 +31,7 @@ public class LikeController {
 	}
 
 	@GetMapping("/{email}")
+	@Operation (summary = "get() : 좋아요 리스트를 조회하는 API")
 	public ResponseEntity<?> get(@PathVariable("email") String email) {
 		System.out.println(email);
 		List<Likes> list = likesService.get(email);

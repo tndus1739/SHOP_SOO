@@ -67,6 +67,8 @@ dependencies {
 	// thymeleaf - 라이브러리 2개
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
 }
 
@@ -86,4 +88,9 @@ tasks.withType(JavaCompile) {
 
 clean.doLast {
     file(querydslDir).deleteDir()
+    
+    
+    
+    
+
 }

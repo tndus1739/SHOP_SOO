@@ -22,6 +22,7 @@ import com.shop.back.order.dto.OrderDto;
 import com.shop.back.order.dto.OrderHistoryDto;
 import com.shop.back.order.service.OrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +36,7 @@ public class OrderController {
 	
 	// 장바구니 상품 주문
 	@PostMapping("/cart/order")
-	
+	@Operation (summary = "orderedCartItem() : 장바구니 상품을 주문하는 API")
 	 public  ResponseEntity orderedCartItem(@RequestBody CartOrderDto cartOrderDto){
 		
 		   
@@ -69,6 +70,7 @@ public class OrderController {
 	
 	// 상품상세페이지에서 바로 주문
 	@PostMapping("/order")
+	@Operation (summary = "addCart() : 상품 상세페이지에서 바로 주문하는 API")
 	public ResponseEntity<?> orderItem (@RequestBody OrderDto orderDto){
 
        
@@ -97,6 +99,7 @@ public class OrderController {
 	// 주문내역 조회 
 	
 		@GetMapping("/order/{email}")
+		@Operation (summary = "addCart() : 주문내역을 조회하는 API")
 	    public ResponseEntity<List<OrderHistoryDto>> getOrderHistory (@RequestParam (name = "email") String email) {
 	        List<OrderHistoryDto> orderHistoryList = orderService.getOrderList(email);
 	        if (orderHistoryList.isEmpty()) {
@@ -110,6 +113,7 @@ public class OrderController {
 	// 주문 취소
 		
 		 @DeleteMapping("order/{orderId}")
+		 @Operation (summary = "addCart() : 주문을 취소하는 API")
 		   public  ResponseEntity cancelOrder (@PathVariable("orderId") Long orderId){
 
 			 orderService.cancelOrder(orderId);

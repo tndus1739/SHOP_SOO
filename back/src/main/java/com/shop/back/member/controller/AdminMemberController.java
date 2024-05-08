@@ -5,6 +5,8 @@ import com.shop.back.member.dto.request.AdminMemberUpdateRequest;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.repository.MemberRepository;
 import com.shop.back.member.service.MemberService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +29,14 @@ public class AdminMemberController {
     //ROLE == 'ADMIN'
     @GetMapping("/page")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation (summary = "adminPage() : 관리자 페이지 API")
     public ResponseEntity<String> adminPage() {
         return new ResponseEntity<>("관리자 페이지에 오신 걸 환영합니다.", HttpStatus.OK);
     }
 
     // 회원 조회
     @GetMapping("/{id}")
+    @Operation (summary = "getMemberById() : 회원을 조회하는 API")
     public ResponseEntity<Member> getMemberById(@PathVariable Long id) {
         Optional<Member> optionalMember = memberRepository.findById(id);
         if (optionalMember.isEmpty()) {
@@ -45,17 +49,20 @@ public class AdminMemberController {
 
     //USER 리스트
     @GetMapping("/userList")
+    @Operation (summary = "userList() : 회원목록을 조회하는 API")
     public ResponseEntity<List<Member>> userList() {
         List<Member> userList = service.getMemberbyRole(Role.USER);
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
     //USER 수정
     @PutMapping("/userDetail/{id}")
+    @Operation (summary = "updateUser() : 회원정보를 수정하는 API")
     public ResponseEntity<Member> updateUser(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }
     //USER 검색
     @GetMapping("/userList/search")
+    @Operation (summary = "getUserListBySearchOption() : 회원을 검색하는 API")
     public ResponseEntity<List<Member>> getUserListBySearchOption(@RequestParam String searchType, @RequestParam String keyword) {
         List<Member> userList = service.getMemberListBySearchOption(Role.USER, searchType, keyword);
         return new ResponseEntity<>(userList, HttpStatus.OK);
@@ -63,18 +70,21 @@ public class AdminMemberController {
 
     //ADMIN 리스트
     @GetMapping("/adminList")
+    @Operation (summary = "adminList() : 관리자 목록을 조회하는 API")
     public ResponseEntity<List<Member>> adminList() {
         List<Member> adminList = service.getMemberbyRole(Role.ADMIN);
         System.out.println("adminList: " + adminList);
         return new ResponseEntity<>(adminList, HttpStatus.OK);
     }
     //ADMIN 수정
+    @Operation (summary = "updateAdmin() : 관리자 정보를 수정하는 API")
     @PutMapping("/adminDetail/{id}")
     public ResponseEntity<Member> updateAdmin(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }
     //ADMIN 검색
     @GetMapping("/adminList/search")
+    @Operation (summary = "getAdminListBySearchOption() : 관리자를 검색하는 API")
     public ResponseEntity<List<Member>> getAdminListBySearchOption(@RequestParam String searchType, @RequestParam String keyword) {
         List<Member> userList = service.getMemberListBySearchOption(Role.ADMIN, searchType, keyword);
         return new ResponseEntity<>(userList, HttpStatus.OK);
@@ -82,6 +92,7 @@ public class AdminMemberController {
 
     //UNREGISTER 리스트
     @GetMapping("/unregisterList")
+    @Operation (summary = "unregisterList() : 탈퇴회원 목록을 조회하는 API")
     public ResponseEntity<List<Member>> unregisterList() {
         List<Member> unregisterList = service.getMemberbyRole(Role.UNREGISTER);
         return new ResponseEntity<>(unregisterList, HttpStatus.OK);
@@ -89,12 +100,14 @@ public class AdminMemberController {
 
     //UNREGISTER 수정
     @PutMapping("/unregisterDetail/{id}")
+    @Operation (summary = "updateUnregister() : 탈퇴한 회원의 권한을 수정하는 API")
     public ResponseEntity<Member> updateUnregister(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }
 
     //UNREGISTER 검색
     @GetMapping("/unregisterList/search")
+    @Operation (summary = "getUnregisterListBySearchOption() : 탈퇴한 회원을 조회하는 API")
     public ResponseEntity<List<Member>> getUnregisterListBySearchOption(@RequestParam String searchType, @RequestParam String keyword) {
         List<Member> userList = service.getMemberListBySearchOption(Role.UNREGISTER, searchType, keyword);
         return new ResponseEntity<>(userList, HttpStatus.OK);

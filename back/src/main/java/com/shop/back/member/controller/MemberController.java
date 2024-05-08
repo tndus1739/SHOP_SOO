@@ -12,6 +12,8 @@ import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
 import com.shop.back.member.service.MemberService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,6 +56,7 @@ public class MemberController {
 
 
     @GetMapping
+    @Operation (summary = "checkEmailDuplicate() : 이메일 중복 체크 API")
     public ResponseEntity<?> checkEmailDuplicate(@RequestParam("email") String email) {
         System.out.println("이메일 중복 요청 성공: " + email);
         System.out.println("MemberController checkEmailDuplicate " + new Date());
@@ -64,6 +67,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/join")
+    @Operation (summary = "join() : 회원가입 API")
     public ResponseEntity<JoinResponse> join(@Valid @RequestBody JoinRequest req) {
         System.out.println("MemberController join " + new Date());
 
@@ -72,6 +76,7 @@ public class MemberController {
 
     //로그인
     @PostMapping("/login")
+    @Operation (summary = "login() : 회원 로그인 API")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req, HttpServletResponse response) {
         System.out.println("MemberController login " + new Date());
 
@@ -80,6 +85,7 @@ public class MemberController {
 
     //로그아웃
     @PostMapping("/logout")
+    @Operation (summary = "logout() : 로그아웃 API")
     public void logout(HttpServletResponse response) {
         // refreshToken 쿠키를 만료시킵니다.
         jwtTokenUtil.expireCookie(response, "refreshToken");
@@ -87,6 +93,7 @@ public class MemberController {
 
     //마이페이지 회원 조회
     @GetMapping("/mypage/{id}")
+    @Operation (summary = "getMemberInfo() : 회원정보를 조회하는 API")
     public ResponseEntity<MemberResponse> getMemberInfo(@RequestHeader("Authorization") String token) {
         //JWT 토큰에서 사용자 이메일 추출
         String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
@@ -103,6 +110,7 @@ public class MemberController {
 
     //비밀번호 일치 확인
     @PostMapping("/checkPwd")
+    @Operation (summary = "checkPassword() : 회원 비밀번호를 확인하는 API")
     public ResponseEntity<String> checkPassword(@RequestBody Map<String, String> requestBody, @RequestHeader("Authorization") String token) {
         try {
             //JWT 토큰에서 사용자 이메일 추출
@@ -134,6 +142,7 @@ public class MemberController {
 
     //정보 수정
     @PutMapping("/mypage/update/{email}")
+    @Operation (summary = "updateMember() : 회원정보를 수정하는 API")
     public ResponseEntity<String> updateMember(@PathVariable String email, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token) {
         System.out.println(email);
         System.out.println(req.getBirth());
@@ -195,6 +204,7 @@ public class MemberController {
 
     //회원 탈퇴 (Role: UNREGISTER으로 변경)
     @PatchMapping("/mypage/withdraw/{email}")
+    @Operation (summary = "withdrawMember() : 회원탈퇴 API")
     public ResponseEntity<String> withdrawMember(@PathVariable String email) {
         try {
             // 회원 탈퇴 처리 수행
